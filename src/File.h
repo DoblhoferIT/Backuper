@@ -19,4 +19,43 @@
 #ifndef _FILE_H_
 #define _FILE_H_
 
+#include <string>
+#include "FileSystemHandler.h"
+#include "Folder.h"
+
+using namespace std;
+
+namespace DoblhoferIT {
+  class FileSystemHandler;
+  class Folder;
+
+  class File {
+  private:
+      FileSystemHandler* fsh;
+
+      string name;
+      Folder* parent;
+
+      unsigned long size;
+      // TODO: Attributes
+
+  public:
+    File                    ();
+    File                    (string             filename,
+                             unsigned long      filesize,
+                             Folder            *parentPath,
+                             FileSystemHandler *fsys_handler);
+
+    void    setName         (string filename);
+    void    setParentPath   (Folder* parentPath);
+
+    void    setFileSize     (unsigned long filesize);
+    unsigned long
+            getFileSize     ();
+
+
+    string  getName();
+    Folder* getParentPath   ();
+  };
+};
 #endif

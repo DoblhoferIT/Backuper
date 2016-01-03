@@ -20,15 +20,20 @@
 #define _FILESYSTEMHANDLER_H_
 
 #include "Folder.h"
+#include "File.h"
+#include <vector>
+
+using namespace std;
 
 namespace DoblhoferIT {
-  	class Folder;
+  class Folder;
+  class File;
 
-	class FileSystemHandler {
-	public:
-		Folder getNextSubFolder(Folder *cur);
-	  	//TODO: File   getNextSubFile(Folder &cur);
-	};
+  class FileSystemHandler {
+  public:
+    virtual vector<Folder> getSubFolders(Folder *cur)=0;
+    virtual vector<File>   getSubFiles(Folder *cur)=0;
+  };
 };
 
 #endif

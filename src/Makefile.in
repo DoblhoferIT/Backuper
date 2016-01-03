@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -96,11 +97,25 @@ DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
+LIBRARIES = $(noinst_LIBRARIES)
+AR = ar
+ARFLAGS = cru
+AM_V_AR = $(am__v_AR_@AM_V@)
+am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
+am__v_AR_0 = @echo "  AR      " $@;
+am__v_AR_1 = 
+libcommon_a_AR = $(AR) $(ARFLAGS)
+libcommon_a_LIBADD =
+am_libcommon_a_OBJECTS = libcommon_a-Folder.$(OBJEXT) \
+	libcommon_a-File.$(OBJEXT) \
+	libcommon_a-FileSystemHandler.$(OBJEXT) \
+	libcommon_a-XMLHandler.$(OBJEXT)
+libcommon_a_OBJECTS = $(am_libcommon_a_OBJECTS)
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_main_OBJECTS = main.$(OBJEXT)
 main_OBJECTS = $(am_main_OBJECTS)
-main_LDADD = $(LDADD)
+main_DEPENDENCIES = libcommon.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -117,6 +132,10 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_@AM_V@)
@@ -130,8 +149,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(main_SOURCES)
-DIST_SOURCES = $(main_SOURCES)
+SOURCES = $(libcommon_a_SOURCES) $(main_SOURCES)
+DIST_SOURCES = $(libcommon_a_SOURCES) $(main_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -197,11 +216,16 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+XML_CFLAGS = @XML_CFLAGS@
+XML_LIBS = @XML_LIBS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -244,7 +268,14 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-main_SOURCES = main.cpp
+main_SOURCES = main.cpp# Folder.cpp File.cpp FileSystemHandler.cpp
+main_LDADD = libcommon.a
+# main binary will be installed into the default directory for "bin"s (hence we used the bin
+# prefix
+noinst_LIBRARIES = libcommon.a
+libcommon_a_SOURCES = Folder.cpp File.cpp FileSystemHandler.cpp XMLHandler.cpp
+libcommon_a_CPPFLAGS = $(XML_CFLAGS)
+libcommon_a_LDFLAGS = $(XML_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -278,6 +309,14 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+libcommon.a: $(libcommon_a_OBJECTS) $(libcommon_a_DEPENDENCIES) $(EXTRA_libcommon_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libcommon.a
+	$(AM_V_AR)$(libcommon_a_AR) libcommon.a $(libcommon_a_OBJECTS) $(libcommon_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libcommon.a
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
@@ -331,21 +370,83 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-File.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-FileSystemHandler.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-Folder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-XMLHandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .cpp.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
 
 .cpp.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+libcommon_a-Folder.o: Folder.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-Folder.o -MD -MP -MF $(DEPDIR)/libcommon_a-Folder.Tpo -c -o libcommon_a-Folder.o `test -f 'Folder.cpp' || echo '$(srcdir)/'`Folder.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-Folder.Tpo $(DEPDIR)/libcommon_a-Folder.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Folder.cpp' object='libcommon_a-Folder.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-Folder.o `test -f 'Folder.cpp' || echo '$(srcdir)/'`Folder.cpp
+
+libcommon_a-Folder.obj: Folder.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-Folder.obj -MD -MP -MF $(DEPDIR)/libcommon_a-Folder.Tpo -c -o libcommon_a-Folder.obj `if test -f 'Folder.cpp'; then $(CYGPATH_W) 'Folder.cpp'; else $(CYGPATH_W) '$(srcdir)/Folder.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-Folder.Tpo $(DEPDIR)/libcommon_a-Folder.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Folder.cpp' object='libcommon_a-Folder.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-Folder.obj `if test -f 'Folder.cpp'; then $(CYGPATH_W) 'Folder.cpp'; else $(CYGPATH_W) '$(srcdir)/Folder.cpp'; fi`
+
+libcommon_a-File.o: File.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-File.o -MD -MP -MF $(DEPDIR)/libcommon_a-File.Tpo -c -o libcommon_a-File.o `test -f 'File.cpp' || echo '$(srcdir)/'`File.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-File.Tpo $(DEPDIR)/libcommon_a-File.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='File.cpp' object='libcommon_a-File.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-File.o `test -f 'File.cpp' || echo '$(srcdir)/'`File.cpp
+
+libcommon_a-File.obj: File.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-File.obj -MD -MP -MF $(DEPDIR)/libcommon_a-File.Tpo -c -o libcommon_a-File.obj `if test -f 'File.cpp'; then $(CYGPATH_W) 'File.cpp'; else $(CYGPATH_W) '$(srcdir)/File.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-File.Tpo $(DEPDIR)/libcommon_a-File.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='File.cpp' object='libcommon_a-File.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-File.obj `if test -f 'File.cpp'; then $(CYGPATH_W) 'File.cpp'; else $(CYGPATH_W) '$(srcdir)/File.cpp'; fi`
+
+libcommon_a-FileSystemHandler.o: FileSystemHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-FileSystemHandler.o -MD -MP -MF $(DEPDIR)/libcommon_a-FileSystemHandler.Tpo -c -o libcommon_a-FileSystemHandler.o `test -f 'FileSystemHandler.cpp' || echo '$(srcdir)/'`FileSystemHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-FileSystemHandler.Tpo $(DEPDIR)/libcommon_a-FileSystemHandler.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='FileSystemHandler.cpp' object='libcommon_a-FileSystemHandler.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-FileSystemHandler.o `test -f 'FileSystemHandler.cpp' || echo '$(srcdir)/'`FileSystemHandler.cpp
+
+libcommon_a-FileSystemHandler.obj: FileSystemHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-FileSystemHandler.obj -MD -MP -MF $(DEPDIR)/libcommon_a-FileSystemHandler.Tpo -c -o libcommon_a-FileSystemHandler.obj `if test -f 'FileSystemHandler.cpp'; then $(CYGPATH_W) 'FileSystemHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/FileSystemHandler.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-FileSystemHandler.Tpo $(DEPDIR)/libcommon_a-FileSystemHandler.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='FileSystemHandler.cpp' object='libcommon_a-FileSystemHandler.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-FileSystemHandler.obj `if test -f 'FileSystemHandler.cpp'; then $(CYGPATH_W) 'FileSystemHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/FileSystemHandler.cpp'; fi`
+
+libcommon_a-XMLHandler.o: XMLHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-XMLHandler.o -MD -MP -MF $(DEPDIR)/libcommon_a-XMLHandler.Tpo -c -o libcommon_a-XMLHandler.o `test -f 'XMLHandler.cpp' || echo '$(srcdir)/'`XMLHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-XMLHandler.Tpo $(DEPDIR)/libcommon_a-XMLHandler.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='XMLHandler.cpp' object='libcommon_a-XMLHandler.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-XMLHandler.o `test -f 'XMLHandler.cpp' || echo '$(srcdir)/'`XMLHandler.cpp
+
+libcommon_a-XMLHandler.obj: XMLHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-XMLHandler.obj -MD -MP -MF $(DEPDIR)/libcommon_a-XMLHandler.Tpo -c -o libcommon_a-XMLHandler.obj `if test -f 'XMLHandler.cpp'; then $(CYGPATH_W) 'XMLHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/XMLHandler.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-XMLHandler.Tpo $(DEPDIR)/libcommon_a-XMLHandler.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='XMLHandler.cpp' object='libcommon_a-XMLHandler.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-XMLHandler.obj `if test -f 'XMLHandler.cpp'; then $(CYGPATH_W) 'XMLHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/XMLHandler.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -431,7 +532,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(LIBRARIES) $(PROGRAMS)
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -468,7 +569,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-noinstLIBRARIES \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -538,23 +640,21 @@ uninstall-am: uninstall-binPROGRAMS
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
-	clean-binPROGRAMS clean-generic cscopelist-am ctags ctags-am \
-	distclean distclean-compile distclean-generic distclean-tags \
-	distdir dvi dvi-am html html-am info info-am install \
-	install-am install-binPROGRAMS install-data install-data-am \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
-	ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-binPROGRAMS
+	clean-binPROGRAMS clean-generic clean-noinstLIBRARIES \
+	cscopelist-am ctags ctags-am distclean distclean-compile \
+	distclean-generic distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-binPROGRAMS \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
-# main binary will be installed into the default directory for "bin"s (hence we used the bin
-# prefix
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

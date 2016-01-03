@@ -20,29 +20,41 @@
 #define _FOLDER_H_
 
 #include <string>
+#include <vector>
 #include "FileSystemHandler.h"
+#include "File.h"
 
 using namespace std;
 
 namespace DoblhoferIT {
   class FileSystemHandler;
+  class File;
 
-	class Folder {
-	private:
-		FileSystemHandler* fsh;
+  class Folder {
+  private:
+    FileSystemHandler* fsh;
 
     string name;
-    string parent;
+    Folder* parent;
     // TODO: Attributes
-	public:
-	  Folder                (string foldername, string parentPath,
-                           FileSystemHandler *fsys_handler);
+  public:
+    Folder                  ();
+    Folder                  (string foldername, Folder* parentPath,
+                              FileSystemHandler *fsys_handler);
 
-    void    setName       (string foldername);
-    void    setParentPath (string parentPath);
-    string  getName       ();
-    string  getParentPath ();
-	};
+    void      setName       (string foldername);
+    void      setParentPath (Folder* parentPath);
+    string    getName       ();
+    Folder*   getParentPath ();
+
+    unsigned long
+              getTotalFileSize  ();
+
+    vector<Folder>
+              getSubFolders ();
+    vector<File>
+              getSubFiles   ();
+  };
 }
 
 #endif

@@ -19,27 +19,61 @@
 #include "Folder.h"
 #include "FileSystemHandler.h"
 
-DoblhoferIT::Folder::Folder(string foldername, string parentPath, FileSystemHandler *fsys_handler) {
-	fsh = fsys_handler;
-	setName(foldername);
-	setParentPath(parentPath);
+DoblhoferIT::Folder::Folder(string foldername, Folder* parentPath, FileSystemHandler *fsys_handler) {
+  fsh = fsys_handler;
+  setName(foldername);
+  setParentPath(parentPath);
+}
+
+DoblhoferIT::Folder::Folder() {
+  fsh = 0;
+  setName("");
+  setParentPath(0);
 }
 
 void
 DoblhoferIT::Folder::setName(string foldername) {
-	name = foldername;
+  name = foldername;
 }
 
 string
 DoblhoferIT::Folder::getName() {
-	return name;
+  return name;
 }
 
-void DoblhoferIT::Folder::setParentPath(string parentPath) {
-	parent = parentPath;
+void DoblhoferIT::Folder::setParentPath(Folder* parentPath) {
+  parent = parentPath;
 }
 
-string
+DoblhoferIT::Folder*
 DoblhoferIT::Folder::getParentPath() {
-	return parent;
+  return parent;
+}
+
+unsigned long
+DoblhoferIT::Folder::getTotalFileSize() {
+  unsigned long ret = 0;
+  vector<Folder> sfolder = getSubFolders();
+  for(int i=0; i<sfolder.size(); i++)
+    ret += sfolder[i].getTotalFileSize();
+
+  vector<File> files = getSubFiles();
+  for(int i=0; i<files.size(); i++)
+    ret += files[i].getFileSize();
+
+  return ret;
+}
+
+vector<DoblhoferIT::Folder>
+DoblhoferIT::Folder::getSubFolders() {
+  if(!fsh)
+    return vector<DoblhoferIT::Folder>();
+  return fsh->getSubFolders(this);
+}
+
+vector<DoblhoferIT::File>
+DoblhoferIT::Folder::getSubFiles() {
+  if(!fsh)
+    return vector<DoblhoferIT::File>();
+  return fsh->getSubFiles(this);
 }
