@@ -46,6 +46,7 @@ namespace DoblhoferIT {
     void      setParentPath (Folder* parentPath);
     string    getName       ();
     Folder*   getParentPath ();
+    string    getAbsolutePath();
 
     unsigned long
               getTotalFileSize  ();

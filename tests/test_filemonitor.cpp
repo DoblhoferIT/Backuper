@@ -20,6 +20,7 @@
 #include <vector>
 #include "../src/Folder.h"
 #include "../src/FileSystemHandler.h"
+#include "../src/DefaultFileSystemHandler.h"
 #include "../src/XMLHandler.h"
 
 using namespace DoblhoferIT;
@@ -83,6 +84,7 @@ void printFolder(Folder* f, int indent) {
 }
 
 int main() {
+/*
   DummyFileSystemHandler dummyhandler;
   Folder f("test", 0, (FileSystemHandler*)&dummyhandler);
 
@@ -102,9 +104,11 @@ int main() {
   ASSERT(fi.getName() == "test", "Filename is not correct");
   ASSERT(fi.getParentPath() == 0, "Parent path is not correct");
   ASSERT(fi.getFileSize() == 123, "Filesize is not correct");
+*/
 
-
-  XMLHandler::writeXML("/tmp/my.xml", 0);
+  DefaultFileSystemHandler myhandler;
+  Folder f = Folder("/home/philipp/Programming", 0, (FileSystemHandler*)&myhandler);
+  XMLHandler::writeXML("/tmp/my2.xml", &f);
 
   return 0;
 }

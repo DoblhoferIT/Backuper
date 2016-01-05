@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE([subdir-objects])
 AC_PROG_RANLIB
 # Let's check for a C++ compiler
 AC_LANG(C++)
-
+AX_CXX_COMPILE_STDCXX_11
 PKG_CHECK_MODULES(XML, libxml-2.0 >= 2.9)
 
 # Let's set a C++ compiler

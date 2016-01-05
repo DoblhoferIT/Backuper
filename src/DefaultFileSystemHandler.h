@@ -1,4 +1,4 @@
-/* File.h
+/* DefaultFileSystemHandler.h
  *
  * Copyright (C) 2015 Doblhofer Philipp <philipp@doblhofer.it>
  *
@@ -16,47 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _FILE_H_
-#define _FILE_H_
+#ifndef _DEFAULTFILESYSTEMHANDLER_H_
+#define _DEFAULTFILESYSTEMHANDLER_H_
 
-#include <string>
-#include "FileSystemHandler.h"
 #include "Folder.h"
+#include "File.h"
+#include "FileSystemHandler.h"
+#include <vector>
 
 using namespace std;
 
 namespace DoblhoferIT {
-  class FileSystemHandler;
   class Folder;
+  class File;
 
-  class File {
-  private:
-      FileSystemHandler* fsh;
-
-      string name;
-      Folder* parent;
-
-      unsigned long size;
-      // TODO: Attributes
-
+  class DefaultFileSystemHandler : FileSystemHandler {
   public:
-    File                    ();
-    File                    (string             filename,
-                             unsigned long      filesize,
-                             Folder            *parentPath,
-                             FileSystemHandler *fsys_handler);
-
-    void    setName         (string filename);
-    void    setParentPath   (Folder* parentPath);
-
-    void    setFileSize     (unsigned long filesize);
-    unsigned long
-            getFileSize     ();
-
-    string  getAbsolutePath ();
-
-    string  getName();
-    Folder* getParentPath   ();
+    vector<Folder> getSubFolders(Folder *cur);
+    vector<File> getSubFiles(Folder *cur);
   };
 };
+
 #endif

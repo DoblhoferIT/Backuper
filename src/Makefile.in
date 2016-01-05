@@ -109,6 +109,7 @@ libcommon_a_LIBADD =
 am_libcommon_a_OBJECTS = libcommon_a-Folder.$(OBJEXT) \
 	libcommon_a-File.$(OBJEXT) \
 	libcommon_a-FileSystemHandler.$(OBJEXT) \
+	libcommon_a-DefaultFileSystemHandler.$(OBJEXT) \
 	libcommon_a-XMLHandler.$(OBJEXT)
 libcommon_a_OBJECTS = $(am_libcommon_a_OBJECTS)
 am__installdirs = "$(DESTDIR)$(bindir)"
@@ -196,6 +197,7 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EXEEXT = @EXEEXT@
+HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -273,7 +275,7 @@ main_LDADD = libcommon.a
 # main binary will be installed into the default directory for "bin"s (hence we used the bin
 # prefix
 noinst_LIBRARIES = libcommon.a
-libcommon_a_SOURCES = Folder.cpp File.cpp FileSystemHandler.cpp XMLHandler.cpp
+libcommon_a_SOURCES = Folder.cpp File.cpp FileSystemHandler.cpp DefaultFileSystemHandler.cpp XMLHandler.cpp
 libcommon_a_CPPFLAGS = $(XML_CFLAGS)
 libcommon_a_LDFLAGS = $(XML_LIBS)
 all: all-am
@@ -370,6 +372,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-File.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-FileSystemHandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcommon_a-Folder.Po@am__quote@
@@ -433,6 +436,20 @@ libcommon_a-FileSystemHandler.obj: FileSystemHandler.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='FileSystemHandler.cpp' object='libcommon_a-FileSystemHandler.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-FileSystemHandler.obj `if test -f 'FileSystemHandler.cpp'; then $(CYGPATH_W) 'FileSystemHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/FileSystemHandler.cpp'; fi`
+
+libcommon_a-DefaultFileSystemHandler.o: DefaultFileSystemHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-DefaultFileSystemHandler.o -MD -MP -MF $(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Tpo -c -o libcommon_a-DefaultFileSystemHandler.o `test -f 'DefaultFileSystemHandler.cpp' || echo '$(srcdir)/'`DefaultFileSystemHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Tpo $(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DefaultFileSystemHandler.cpp' object='libcommon_a-DefaultFileSystemHandler.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-DefaultFileSystemHandler.o `test -f 'DefaultFileSystemHandler.cpp' || echo '$(srcdir)/'`DefaultFileSystemHandler.cpp
+
+libcommon_a-DefaultFileSystemHandler.obj: DefaultFileSystemHandler.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-DefaultFileSystemHandler.obj -MD -MP -MF $(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Tpo -c -o libcommon_a-DefaultFileSystemHandler.obj `if test -f 'DefaultFileSystemHandler.cpp'; then $(CYGPATH_W) 'DefaultFileSystemHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/DefaultFileSystemHandler.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Tpo $(DEPDIR)/libcommon_a-DefaultFileSystemHandler.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DefaultFileSystemHandler.cpp' object='libcommon_a-DefaultFileSystemHandler.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libcommon_a-DefaultFileSystemHandler.obj `if test -f 'DefaultFileSystemHandler.cpp'; then $(CYGPATH_W) 'DefaultFileSystemHandler.cpp'; else $(CYGPATH_W) '$(srcdir)/DefaultFileSystemHandler.cpp'; fi`
 
 libcommon_a-XMLHandler.o: XMLHandler.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libcommon_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libcommon_a-XMLHandler.o -MD -MP -MF $(DEPDIR)/libcommon_a-XMLHandler.Tpo -c -o libcommon_a-XMLHandler.o `test -f 'XMLHandler.cpp' || echo '$(srcdir)/'`XMLHandler.cpp

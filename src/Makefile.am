@@ -6,6 +6,6 @@ main_LDADD = libcommon.a
 # prefix
 
 noinst_LIBRARIES = libcommon.a
-libcommon_a_SOURCES = Folder.cpp File.cpp FileSystemHandler.cpp XMLHandler.cpp
+libcommon_a_SOURCES = Folder.cpp File.cpp FileSystemHandler.cpp DefaultFileSystemHandler.cpp XMLHandler.cpp
 libcommon_a_CPPFLAGS = $(XML_CFLAGS)
 libcommon_a_LDFLAGS = $(XML_LIBS)

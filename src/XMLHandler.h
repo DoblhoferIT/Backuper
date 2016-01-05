@@ -30,9 +30,15 @@ using namespace std;
 namespace DoblhoferIT {
 
   class XMLHandler{
+  private:
+    static xmlChar *convert(const char *in, const char *encoding);
+    static bool writeXMLFolder(xmlTextWriterPtr *ptr,
+                               Folder      *folder);
+    static bool writeXMLFile(xmlTextWriterPtr *ptr,
+                               File      *file);
   public:
     // TODO: change to bool
-    static void writeXML(string xmlfilename, Folder *root);
+    static bool writeXML(string xmlfilename, Folder *root);
   };
 };
 

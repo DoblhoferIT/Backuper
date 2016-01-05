@@ -49,6 +49,12 @@ DoblhoferIT::File::setFileSize(unsigned long filesize) {
   size = filesize;
 }
 
+string
+DoblhoferIT::File::getAbsolutePath() {
+  if(getParentPath() == NULL)
+    return getName();
+  return getParentPath()->getAbsolutePath() + "/" + getName();
+}
 
 unsigned long
 DoblhoferIT::File::getFileSize() {

@@ -50,6 +50,13 @@ DoblhoferIT::Folder::getParentPath() {
   return parent;
 }
 
+string
+DoblhoferIT::Folder::getAbsolutePath() {
+  if(getParentPath() == NULL)
+    return getName();
+  return getParentPath()->getAbsolutePath() + "/" + getName();
+}
+
 unsigned long
 DoblhoferIT::Folder::getTotalFileSize() {
   unsigned long ret = 0;
